@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -O2 -I/Users/apple/Dev/x264
+CFLAGS=-Wall -O0 -g -I/Users/apple/Dev/x264
 LDFLAGS=-L/Users/apple/Dev/x264 -lx264
 
 TARGET=avcenc
@@ -15,4 +15,4 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -rf *.o $(TARGET) out.264

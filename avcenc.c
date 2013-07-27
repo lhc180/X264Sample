@@ -31,7 +31,7 @@ int main() {
 	params.i_slice_max_size = 1400;
 	params.i_level_idc = 13;
 	params.b_repeat_headers = 1;
-	params.b_annexb = 0;
+	params.b_annexb = 1;
     
 	//these parameters must be set so that our stream is baseline
 	params.analyse.b_transform_8x8 = 0;
@@ -64,7 +64,7 @@ int main() {
         goto FAILED;
     }
     
-    while (fread(yuv_buf, YUV_LENGTH, 1, yuv_fp) == YUV_LENGTH) {
+    while (fread(yuv_buf, YUV_LENGTH, 1, yuv_fp)) {
         x264_picture_t xpic;
 		x264_picture_t oxpic;
 		x264_nal_t *xnals = NULL;
@@ -90,7 +90,7 @@ int main() {
         if (x264_encoder_encode(enc, &xnals, &num_nals, &xpic, &oxpic) >= 0) {
             int i;
             for (i = 0; i < num_nals; ++i) {
-                fwrite(xnals[i].p_payload+4, xnals[i].i_payload-4, 1, out_fp);
+                fwrite(xnals[i].p_payload, xnals[i].i_payload, 1, out_fp);
             }
         }
     }
