@@ -30,6 +30,7 @@ int main() {
 	params.i_fps_den = 1;
 	params.i_slice_max_size = 1400;
 	params.i_level_idc = 13;
+        
 	params.b_repeat_headers = 1;
 	params.b_annexb = 1;
     
@@ -40,6 +41,13 @@ int main() {
 	params.i_bframe = 0;
 	params.analyse.i_weighted_pred = X264_WEIGHTP_NONE;
     
+	bitrate = bitrate*0.92;
+	params.rc.i_rc_method = X264_RC_ABR;
+	params.rc.i_bitrate = (int)(bitrate/1000);
+	params.rc.f_rate_tolerance = 0.1;
+	params.rc.i_vbv_max_bitrate = (int) ((bitrate+10000/2)/1000);
+	params.rc.i_vbv_buffer_size = params.rc.i_vbv_max_bitrate;
+	params.rc.f_vbv_buffer_init = 0.5;
     enc = x264_encoder_open(&params);
     if (enc == NULL) {
         printf("Fail to create x264 encoder.");
