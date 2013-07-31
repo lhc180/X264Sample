@@ -17,6 +17,7 @@ int main() {
     FILE *yuv_fp = NULL;
     FILE *out_fp = NULL;
     unsigned char *yuv_buf = NULL;
+    int bitrate = 200000;
     
     if (x264_param_default_preset(&params, "superfast", "zerolatency")) {
         printf("Canot apply default x264 configuration");
@@ -26,7 +27,7 @@ int main() {
 	params.i_threads = 1;
 	params.i_width = YUV_WIDTH;
 	params.i_height = YUV_HIGHT;
-	params.i_fps_num = 15;
+	params.i_fps_num = 10;
 	params.i_fps_den = 1;
 	params.i_slice_max_size = 1400;
 	params.i_level_idc = 13;
@@ -48,6 +49,11 @@ int main() {
 	params.rc.i_vbv_max_bitrate = (int) ((bitrate+10000/2)/1000);
 	params.rc.i_vbv_buffer_size = params.rc.i_vbv_max_bitrate;
 	params.rc.f_vbv_buffer_init = 0.5;
+    
+    //debug
+    // params.i_log_level = X264_LOG_DEBUG;
+    params.analyse.b_psnr = 1;
+
     enc = x264_encoder_open(&params);
     if (enc == NULL) {
         printf("Fail to create x264 encoder.");
